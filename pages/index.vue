@@ -243,21 +243,19 @@ async function submitForm() {
     return
   }
   
-  // Submit to Google Sheets (URL to be configured)
-  const GOOGLE_SHEETS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'
+  // Submit to Google Sheets
+  const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzHhMv3gZ3NqjjK7YSBxA8BFwj3SE93j2DlfTwAzUqbBewu6NnthgyohdbTU2XbaAdLyQ/exec'
   
   try {
-    if (GOOGLE_SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-      await fetch(GOOGLE_SHEETS_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          timestamp: new Date().toISOString()
-        })
+    await fetch(GOOGLE_SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...formData,
+        timestamp: new Date().toISOString()
       })
-    }
+    })
     
     // Save to localStorage as backup
     const existing = JSON.parse(localStorage.getItem('majorInscriptions') || '[]')
