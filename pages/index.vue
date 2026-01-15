@@ -244,7 +244,7 @@ async function submitForm() {
   }
   
   // Submit to Google Sheets
-  const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzHhMv3gZ3NqjjK7YSBxA8BFwj3SE93j2DlfTwAzUqbBewu6NnthgyohdbTU2XbaAdLyQ/exec'
+  const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyrjQePbsm-VyxG2BWej406M8yu7nysCFM-H8EaOy8Rj70DDCf8e5U0AbukhJXP5Jkzmw/exec'
   
   try {
     await fetch(GOOGLE_SHEETS_URL, {
