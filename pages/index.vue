@@ -196,35 +196,26 @@ function initInteractiveChart() {
 
 function initExitIntent() {
   const STORAGE_KEY = 'major_exit_popup_shown'
-  const MIN_TIME_ON_PAGE = 5000
+  const MIN_TIME_ON_PAGE = 3000 // 3 secondes minimum sur la page
   const pageLoadTime = Date.now()
   
+  // Ne pas afficher si déjà montré cette session
   if (sessionStorage.getItem(STORAGE_KEY)) return
   
-  let hasScrolledDeep = false
-  
-  const checkShow = () => {
-    if (showExitPopup.value) return
-    if (Date.now() - pageLoadTime < MIN_TIME_ON_PAGE) return
-    showExitPopup.value = true
-    sessionStorage.setItem(STORAGE_KEY, 'true')
-  }
-  
+  // Affiche le popup uniquement quand la souris quitte vers le haut (intention de fermer)
   document.addEventListener('mouseout', (e) => {
+    // Vérifie que la souris sort par le haut de la fenêtre
     if (e.clientY <= 0 && e.relatedTarget === null) {
-      checkShow()
+      // Vérifie que l'utilisateur a passé un minimum de temps sur la page
+      if (showExitPopup.value) return
+      if (Date.now() - pageLoadTime < MIN_TIME_ON_PAGE) return
+      
+      showExitPopup.value = true
+      sessionStorage.setItem(STORAGE_KEY, 'true')
     }
   })
-  
-  window.addEventListener('scroll', () => {
-    const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
-    if (scrollPercent > 50) hasScrolledDeep = true
-  })
-  
-  setTimeout(() => {
-    if (!hasScrolledDeep) checkShow()
-  }, 30000)
 }
+
 
 function toggleFaq(index: number) {
   activeFaq.value = activeFaq.value === index ? null : index
@@ -912,8 +903,8 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
 
           <div class="footer-links">
             <h5>Légal</h5>
-            <a href="#">CGU</a>
-            <a href="#">Confidentialité</a>
+            <a href="/cgu">CGU</a>
+            <a href="/confidentialite">Confidentialité</a>
           </div>
         </div>
 
