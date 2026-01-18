@@ -14,6 +14,13 @@ const showExitPopup = ref(false)
 const formSubmitted = ref(false)
 const isSubmitting = ref(false)
 const counterValue = ref(0)
+const formStep = ref(1) // 1 = email, 2 = details
+
+// Animated stats
+const statHours = ref(0)
+const statMinutes = ref(0)
+const statPercent = ref(0)
+const statsAnimated = ref(false)
 
 // Form data
 const formData = reactive({
@@ -114,12 +121,53 @@ onMounted(() => {
   const counterEl = document.querySelector('.counter-value')
   if (counterEl) counterObserver.observe(counterEl)
   
+  // Init stats animation
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !statsAnimated.value) {
+        statsAnimated.value = true
+        animateStats()
+        statsObserver.unobserve(entry.target)
+      }
+    })
+  }, { threshold: 0.3 })
+  
+  const statsEl = document.querySelector('.stats')
+  if (statsEl) statsObserver.observe(statsEl)
+  
   // Init chart animation
   initInteractiveChart()
   
   // Init exit intent
   initExitIntent()
 })
+
+function animateStats() {
+  const duration = 1500
+  const startTime = performance.now()
+  const targets = { hours: 5, minutes: 2, percent: 1 }
+  
+  function update(currentTime: number) {
+    const elapsed = currentTime - startTime
+    const progress = Math.min(elapsed / duration, 1)
+    const easeOut = 1 - Math.pow(1 - progress, 3)
+    
+    statHours.value = Math.floor(targets.hours * easeOut)
+    statMinutes.value = Math.floor(targets.minutes * easeOut)
+    statPercent.value = Math.floor(targets.percent * easeOut)
+    
+    if (progress < 1) {
+      requestAnimationFrame(update)
+    } else {
+      // Ensure final values
+      statHours.value = targets.hours
+      statMinutes.value = targets.minutes
+      statPercent.value = targets.percent
+    }
+  }
+  
+  requestAnimationFrame(update)
+}
 
 function initRevealAnimations() {
   const revealElements = document.querySelectorAll('.reveal')
@@ -273,6 +321,13 @@ function closeExitPopup() {
   showExitPopup.value = false
 }
 
+function goToStep2() {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (emailRegex.test(formData.email)) {
+    formStep.value = 2
+  }
+}
+
 async function submitForm() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   
@@ -346,41 +401,7 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
 </script>
 
 <template>
-  <div>
-    <!-- Urgency Banner -->
-    <div class="urgency-banner">
-      <span>
-        <svg class="banner-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <polyline points="12 6 12 12 16 14"></polyline>
-        </svg>
-        Offre de lancement : plus que <strong>47 places</strong> au tarif réduit
-      </span>
-    </div>
-
-    <!-- Header -->
-    <header class="header">
-      <nav class="nav container">
-        <a href="#" class="logo">
-          <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 8L4 16L20 24L36 16L20 8Z" fill="#0B1F3A" />
-            <path d="M10 19V28C10 28 14 32 20 32C26 32 30 28 30 28V19L20 24L10 19Z" fill="#0B1F3A" />
-            <path d="M32 17V26" stroke="#D4A72C" stroke-width="2" stroke-linecap="round" />
-            <circle cx="32" cy="28" r="2" fill="#D4A72C" />
-          </svg>
-          <span class="logo-text">Major</span>
-        </a>
-        <div class="nav-links">
-          <a href="#features">Fonctionnalités</a>
-          <a href="#features">Comment ça marche</a>
-          <a href="#about">À propos</a>
-          <a href="#faq">FAQ</a>
-        </div>
-        <a href="#inscription" class="btn btn-primary btn-nav">S'inscrire gratuitement</a>
-      </nav>
-    </header>
-
+  <main class="home-page">
     <!-- Hero Section -->
     <section class="hero">
       <!-- Floating Icons -->
@@ -428,8 +449,7 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
               <img src="/avatar_badge_2.png" alt="Étudiant" class="avatar-img">
               <img src="/avatar_badge_3.png" alt="Étudiant" class="avatar-img">
             </div>
-            <span class="badge-counter">+<span class="counter-value">{{ counterValue }}</span> étudiants
-              pré-inscrits</span>
+            <span class="badge-counter">+<span class="counter-value">{{ counterValue }}</span>/200 places réservées</span>
           </div>
 
           <h1 class="hero-title">
@@ -441,10 +461,19 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
             L'app qui transforme tes révisions en jeu et te propulse dans le top 1%.
           </p>
 
+          <!-- Progress Bar -->
+          <div class="hero-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" :style="{ width: Math.min((counterValue / 200) * 100, 100) + '%' }"></div>
+            </div>
+            <span class="progress-label">🔥 Plus que {{ 200 - counterValue }} places au tarif de lancement</span>
+          </div>
+
           <div class="hero-cta">
             <a href="#inscription" class="btn btn-primary btn-lg btn-glow">
-              Essayer Major
+              Réserver ma place GRATUITE →
             </a>
+            <span class="hero-cta-note">✓ Sans carte bancaire • Accès immédiat</span>
           </div>
         </div>
 
@@ -578,21 +607,21 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
     </section>
 
     <!-- Stats Section -->
-    <section class="stats">
+    <section class="stats" ref="statsSection">
       <div class="container">
         <div class="stats-grid">
           <div class="stat-item reveal">
-            <span class="stat-number">+5h</span>
+            <span class="stat-number">+{{ statHours }}h</span>
             <span class="stat-label">gagnées par semaine</span>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item reveal">
-            <span class="stat-number">2min</span>
+            <span class="stat-number">{{ statMinutes }}min</span>
             <span class="stat-label">pour créer tes flashcards</span>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item reveal">
-            <span class="stat-number">1%</span>
+            <span class="stat-number">{{ statPercent }}%</span>
             <span class="stat-label">des étudiants d'élite</span>
           </div>
         </div>
@@ -901,30 +930,51 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
           <p class="cta-subtitle">Le prochain major, c'est toi.</p>
 
           <form v-if="!formSubmitted" id="inscriptionForm" class="inscription-form" @submit.prevent="submitForm">
-            <div class="form-row">
-              <div class="form-group">
-                <input v-model="formData.prenom" type="text" id="prenom" name="prenom" placeholder="Ton prénom"
-                  required>
-              </div>
+            <!-- Step 1: Email only -->
+            <div v-if="formStep === 1" class="form-step">
               <div class="form-group">
                 <input v-model="formData.email" type="email" id="email" name="email"
-                  placeholder="ton.email@exemple.com" required>
+                  placeholder="Ton adresse email" required class="input-large">
               </div>
+              <button type="button" class="btn btn-primary btn-lg btn-full btn-glow" @click="goToStep2" :disabled="!formData.email">
+                🚀 Réserver ma place maintenant
+              </button>
             </div>
-            <div class="form-group">
-              <input v-model="formData.filiere" type="text" id="filiere" name="filiere"
-                placeholder="Ta filière (ex: Médecine, Droit, Commerce...)" required>
+            
+            <!-- Step 2: Details -->
+            <div v-else class="form-step">
+              <div class="step-indicator">
+                <span class="step-back" @click="formStep = 1">← Retour</span>
+                <span class="step-progress">Étape 2/2</span>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <input v-model="formData.prenom" type="text" id="prenom" name="prenom" placeholder="Ton prénom"
+                    required>
+                </div>
+                <div class="form-group">
+                  <input v-model="formData.filiere" type="text" id="filiere" name="filiere"
+                    placeholder="Ta filière (ex: Médecine, Droit...)" required>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg btn-full btn-glow" :disabled="isSubmitting">
+                <span v-if="isSubmitting" class="btn-loading">
+                  <svg class="spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+                    <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/>
+                  </svg>
+                  Envoi en cours...
+                </span>
+                <span v-else>✅ Confirmer mon inscription</span>
+              </button>
             </div>
-            <button type="submit" class="btn btn-primary btn-lg btn-full btn-glow" :disabled="isSubmitting">
-              <span v-if="isSubmitting" class="btn-loading">
-                <svg class="spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
-                  <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/>
-                </svg>
-                Envoi en cours...
-              </span>
-              <span v-else>Demander l'accès</span>
-            </button>
+            
+            <!-- Garanties -->
+            <div class="form-guarantees">
+              <span class="guarantee">✅ 100% gratuit</span>
+              <span class="guarantee">✅ Sans carte bancaire</span>
+              <span class="guarantee">🔒 RGPD</span>
+            </div>
           </form>
 
           <div v-else class="success-message">
@@ -959,60 +1009,10 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <div class="footer-logo">
-              <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 8L4 16L20 24L36 16L20 8Z" fill="#0B1F3A" />
-                <path d="M10 19V28C10 28 14 32 20 32C26 32 30 28 30 28V19L20 24L10 19Z" fill="#0B1F3A" />
-                <path d="M32 17V26" stroke="#D4A72C" stroke-width="2" stroke-linecap="round" />
-                <circle cx="32" cy="28" r="2" fill="#D4A72C" />
-              </svg>
-              <span class="logo-text">Major</span>
-            </div>
-            <p class="footer-tagline">D'étudiant moyen à numéro 1</p>
-          </div>
-
-          <div class="footer-links">
-            <h5>Pages</h5>
-            <a href="#features">Fonctionnalités</a>
-            <a href="#pillars">Comment ça marche</a>
-            <a href="#about">À propos</a>
-            <a href="#faq">FAQ</a>
-          </div>
-
-          <div class="footer-links">
-            <h5>Légal</h5>
-            <a href="/cgu">CGU</a>
-            <a href="/confidentialite">Confidentialité</a>
-          </div>
-        </div>
-
-        <div class="footer-bottom">
-          <div class="footer-social">
-            <a href="#" class="social-icon" aria-label="Instagram">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-              </svg>
-            </a>
-            <a href="#" class="social-icon" aria-label="TikTok">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-              </svg>
-            </a>
-          </div>
-          <p>© 2026 Major. Tous droits réservés.</p>
-          <p class="security-line">🔒 Données sécurisées et protégées</p>
-        </div>
-      </div>
-    </footer>
+    <!-- Sticky CTA Mobile -->
+    <div class="sticky-cta-mobile">
+      <a href="#inscription" class="btn btn-primary btn-lg">🚀 Réserver ma place</a>
+    </div>
 
     <!-- Exit Intent Popup -->
     <Teleport to="body">
@@ -1026,29 +1026,29 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
           </button>
 
           <div class="exit-popup-content">
-            <div class="exit-popup-badge">🎓 Dernière chance</div>
-            <h2 class="exit-popup-title">Attends, ne pars pas les mains vides !</h2>
-            <p class="exit-popup-subtitle">Rejoins les <strong>+127 étudiants</strong> qui ont déjà réservé leur
-              place au tarif de lancement.</p>
+            <div class="exit-popup-badge">🎁 Cadeau gratuit</div>
+            <h2 class="exit-popup-title">Reçois notre guide PDF offert</h2>
+            <p class="exit-popup-subtitle"><strong>"5 méthodes scientifiques pour mémoriser 2x plus vite"</strong><br>+ accès anticipé à Major</p>
 
             <div class="exit-popup-benefits">
+              <div class="exit-benefit">
+                <span class="benefit-icon">📚</span>
+                <span>Guide PDF gratuit</span>
+              </div>
+              <div class="exit-benefit">
+                <span class="benefit-icon">🎯</span>
+                <span>Accès prioritaire</span>
+              </div>
               <div class="exit-benefit">
                 <span class="benefit-icon">✨</span>
                 <span>Tarif réduit à vie</span>
               </div>
-              <div class="exit-benefit">
-                <span class="benefit-icon">🧠</span>
-                <span>IA qui fiche tes cours</span>
-              </div>
-              <div class="exit-benefit">
-                <span class="benefit-icon">📈</span>
-                <span>Algorithme de révision</span>
-              </div>
             </div>
 
             <a href="#inscription" class="btn btn-primary btn-lg exit-popup-cta" @click="closeExitPopup">
-              Réserver ma place maintenant
+              Recevoir le guide + réserver ma place
             </a>
+
 
             <button class="exit-popup-dismiss" @click="closeExitPopup">
               Non merci, je préfère réviser seul
@@ -1057,5 +1057,5 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
         </div>
       </div>
     </Teleport>
-  </div>
+  </main>
 </template>
