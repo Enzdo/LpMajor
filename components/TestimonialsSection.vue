@@ -1,47 +1,47 @@
 <template>
-  <section class="testimonials">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-badge">Ils témoignent</span>
-        <h2 class="section-title">Ce que disent nos premiers utilisateurs</h2>
+  <section class="py-24 bg-[#F6F7FB]">
+    <div class="w-full max-w-[1248px] mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <span class="inline-block px-4 py-1 bg-[#D4A72C]/10 text-[#D4A72C] text-sm font-semibold rounded-full border border-[#D4A72C]/30 mb-6">Ils témoignent</span>
+        <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold text-[#0B1F3A] leading-tight">Ce que disent nos premiers utilisateurs</h2>
       </div>
 
-      <div class="testimonials-grid reveal">
-        <div class="testimonial-card">
-          <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-          <p class="testimonial-text">"Je stressais pour le bac, je ne savais pas comment m'organiser. Avec Major, je
-            sais exactement quoi réviser chaque jour. J'ai pris confiance et mes notes ont décollé."</p>
-          <div class="testimonial-author">
-            <img src="/images/avatars/avatar_badge_1.png" alt="Clara M." class="testimonial-avatar">
-            <div class="testimonial-info">
-              <span class="testimonial-name">Clara M.</span>
-              <span class="testimonial-role">Terminale · Lyon</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal">
+        <!-- Card 1 -->
+        <div class="bg-white rounded-2xl p-8 border border-[#E6EAF2] transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-transparent">
+          <div class="text-lg mb-4">⭐⭐⭐⭐⭐</div>
+          <p class="text-base leading-relaxed text-[#0B1220] mb-6 italic">"Je stressais pour le bac, je ne savais pas comment m'organiser. Avec Major, je sais exactement quoi réviser chaque jour. J'ai pris confiance et mes notes ont décollé."</p>
+          <div class="flex items-center gap-3">
+            <img src="/images/avatars/avatar_badge_1.png" alt="Clara M." class="w-12 h-12 rounded-full object-cover border-2 border-[#E6EAF2]">
+            <div class="flex flex-col">
+              <span class="font-semibold text-[#0B1F3A] text-[0.9375rem]">Clara M.</span>
+              <span class="text-[0.8125rem] text-[#526075]">Terminale · Lyon</span>
             </div>
           </div>
         </div>
 
-        <div class="testimonial-card">
-          <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-          <p class="testimonial-text">"Je révise 2h de moins par jour et je retiens 3x plus. Le classement me pousse à
-            rester constant. Mes partiels n'ont jamais été aussi bien préparés."</p>
-          <div class="testimonial-author">
-            <img src="/images/avatars/avatar_badge_2.png" alt="Thomas D." class="testimonial-avatar">
-            <div class="testimonial-info">
-              <span class="testimonial-name">Thomas D.</span>
-              <span class="testimonial-role">Droit L2 · Paris</span>
+        <!-- Card 2 -->
+        <div class="bg-white rounded-2xl p-8 border border-[#E6EAF2] transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-transparent">
+          <div class="text-lg mb-4">⭐⭐⭐⭐⭐</div>
+          <p class="text-base leading-relaxed text-[#0B1220] mb-6 italic">"Je révise 2h de moins par jour et je retiens 3x plus. Le classement me pousse à rester constant. Mes partiels n'ont jamais été aussi bien préparés."</p>
+          <div class="flex items-center gap-3">
+            <img src="/images/avatars/avatar_badge_2.png" alt="Thomas D." class="w-12 h-12 rounded-full object-cover border-2 border-[#E6EAF2]">
+            <div class="flex flex-col">
+              <span class="font-semibold text-[#0B1F3A] text-[0.9375rem]">Thomas D.</span>
+              <span class="text-[0.8125rem] text-[#526075]">Droit L2 · Paris</span>
             </div>
           </div>
         </div>
 
-        <div class="testimonial-card">
-          <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-          <p class="testimonial-text">"Le programme génère mes flashcards en 2 minutes. Avant, je passais des heures à ficher.
-            Major a littéralement sauvé mon semestre."</p>
-          <div class="testimonial-author">
-            <img src="/images/avatars/avatar_badge_3.png" alt="Emma L." class="testimonial-avatar">
-            <div class="testimonial-info">
-              <span class="testimonial-name">Emma L.</span>
-              <span class="testimonial-role">École de commerce · Toulouse</span>
+        <!-- Card 3 -->
+        <div class="bg-white rounded-2xl p-8 border border-[#E6EAF2] transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-transparent">
+          <div class="text-lg mb-4">⭐⭐⭐⭐⭐</div>
+          <p class="text-base leading-relaxed text-[#0B1220] mb-6 italic">"Le programme génère mes flashcards en 2 minutes. Avant, je passais des heures à ficher. Major a littéralement sauvé mon semestre."</p>
+          <div class="flex items-center gap-3">
+            <img src="/images/avatars/avatar_badge_3.png" alt="Emma L." class="w-12 h-12 rounded-full object-cover border-2 border-[#E6EAF2]">
+            <div class="flex flex-col">
+              <span class="font-semibold text-[#0B1F3A] text-[0.9375rem]">Emma L.</span>
+              <span class="text-[0.8125rem] text-[#526075]">École de commerce · Toulouse</span>
             </div>
           </div>
         </div>
@@ -49,70 +49,3 @@
     </div>
   </section>
 </template>
-
-<style scoped>
-.testimonials {
-  padding: var(--spacing-4xl) 0;
-  background: var(--color-background);
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--spacing-xl);
-}
-
-.testimonial-card {
-  background: var(--color-white);
-  border-radius: var(--radius-2xl);
-  padding: var(--spacing-2xl);
-  border: 1px solid var(--color-border);
-  transition: all var(--transition-slow);
-}
-
-.testimonial-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-xl);
-  border-color: transparent;
-}
-
-.testimonial-rating {
-  font-size: 1.125rem;
-  margin-bottom: var(--spacing-md);
-}
-
-.testimonial-text {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--color-text);
-  margin-bottom: var(--spacing-lg);
-}
-
-.testimonial-author {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-.testimonial-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.testimonial-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.testimonial-name {
-  font-weight: 600;
-  color: var(--color-primary);
-}
-
-.testimonial-role {
-  font-size: 0.875rem;
-  color: var(--color-text-light);
-}
-</style>

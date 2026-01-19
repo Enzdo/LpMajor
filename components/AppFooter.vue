@@ -1,178 +1,60 @@
 <template>
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="footer-logo">
-            <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 8L4 16L20 24L36 16L20 8Z" fill="#0B1F3A" />
-              <path d="M10 19V28C10 28 14 32 20 32C26 32 30 28 30 28V19L20 24L10 19Z" fill="#0B1F3A" />
+  <footer class="bg-[#0B1F3A] text-white py-16 md:py-24 pb-24 md:pb-8">
+    <div class="w-full max-w-[1248px] mx-auto px-4 md:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-8 md:gap-12 mb-8 md:mb-12 text-center md:text-left">
+        <div class="flex flex-col items-center md:items-start">
+          <div class="flex items-center gap-2 mb-4">
+            <svg class="w-8 h-8" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 8L4 16L20 24L36 16L20 8Z" fill="white" />
+              <path d="M10 19V28C10 28 14 32 20 32C26 32 30 28 30 28V19L20 24L10 19Z" fill="white" />
               <path d="M32 17V26" stroke="#D4A72C" stroke-width="2" stroke-linecap="round" />
               <circle cx="32" cy="28" r="2" fill="#D4A72C" />
             </svg>
-            <span class="logo-text">Major</span>
+            <span class="text-xl font-extrabold uppercase">Major</span>
           </div>
-          <p class="footer-tagline">D'étudiant moyen à numéro 1</p>
+          <p class="text-white/80 text-sm">D'étudiant moyen à numéro 1</p>
         </div>
 
-        <div class="footer-links">
-          <h5>Pages</h5>
-          <a href="#features">Comment ça marche</a>
-          <a href="#about">À propos</a>
-          <a href="#faq">FAQ</a>
-          <NuxtLink to="/blog">Blog</NuxtLink>
+        <div>
+          <h5 class="text-sm font-semibold uppercase tracking-wide mb-4">Pages</h5>
+          <a href="#features" class="block text-white/70 text-sm mb-2 no-underline transition-colors duration-200 hover:text-white">Comment ça marche</a>
+          <a href="#about" class="block text-white/70 text-sm mb-2 no-underline transition-colors duration-200 hover:text-white">À propos</a>
+          <a href="#faq" class="block text-white/70 text-sm mb-2 no-underline transition-colors duration-200 hover:text-white">FAQ</a>
+          <NuxtLink to="/blog" class="block text-white/70 text-sm mb-2 no-underline transition-colors duration-200 hover:text-white">Blog</NuxtLink>
         </div>
 
-        <div class="footer-links">
-          <h5>Légal</h5>
-          <NuxtLink to="/cgu">CGU</NuxtLink>
-          <NuxtLink to="/confidentialite">Confidentialité</NuxtLink>
+        <div>
+          <h5 class="text-sm font-semibold uppercase tracking-wide mb-4">Légal</h5>
+          <NuxtLink to="/cgu" class="block text-white/70 text-sm mb-2 no-underline transition-colors duration-200 hover:text-white">CGU</NuxtLink>
+          <NuxtLink to="/confidentialite" class="block text-white/70 text-sm mb-2 no-underline transition-colors duration-200 hover:text-white">Confidentialité</NuxtLink>
         </div>
       </div>
 
-      <div class="footer-bottom">
-        <div class="footer-social">
-          <a href="#" class="social-icon" aria-label="Instagram">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="flex flex-col-reverse md:flex-row items-center justify-between pt-8 border-t border-white/10 gap-4 text-center">
+        <p class="text-white/60 text-sm">© {{ new Date().getFullYear() }} Major. Tous droits réservés.</p>
+        <div class="flex gap-4">
+          <a href="#" class="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white transition-all duration-200 hover:bg-white/20 hover:-translate-y-0.5" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
               <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
             </svg>
           </a>
-          <a href="#" class="social-icon" aria-label="X (Twitter)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <a href="#" class="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white transition-all duration-200 hover:bg-white/20 hover:-translate-y-0.5" aria-label="X (Twitter)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
               <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
             </svg>
           </a>
-          <a href="#" class="social-icon" aria-label="LinkedIn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <a href="#" class="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white transition-all duration-200 hover:bg-white/20 hover:-translate-y-0.5" aria-label="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
               <rect x="2" y="9" width="4" height="12"></rect>
               <circle cx="4" cy="4" r="2"></circle>
             </svg>
           </a>
         </div>
-        <p class="footer-copyright">© {{ new Date().getFullYear() }} Major. Tous droits réservés.</p>
       </div>
     </div>
   </footer>
 </template>
-
-<style scoped>
-.footer {
-  background: var(--color-primary);
-  color: #FFFFFF;
-  padding: var(--spacing-4xl) 0 var(--spacing-xl);
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: var(--spacing-3xl);
-  margin-bottom: var(--spacing-3xl);
-}
-
-.footer-brand .footer-logo {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
-}
-
-.footer-brand .logo-icon {
-  width: 32px;
-  height: 32px;
-}
-
-.footer-brand .logo-icon path,
-.footer-brand .logo-icon circle {
-  fill: #FFFFFF;
-  stroke: #D4A72C;
-}
-
-.footer-brand .logo-text {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  text-transform: uppercase;
-}
-
-.footer-tagline {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.875rem;
-}
-
-.footer-links h5 {
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: var(--spacing-md);
-  color: #FFFFFF;
-}
-
-.footer-links a {
-  display: block;
-  color: rgba(255, 255, 255, 0.7);
-  text-decoration: none;
-  font-size: 0.875rem;
-  margin-bottom: var(--spacing-sm);
-  transition: color var(--transition-base);
-}
-
-.footer-links a:hover {
-  color: #FFFFFF;
-}
-
-.footer-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: var(--spacing-xl);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.footer-social {
-  display: flex;
-  gap: var(--spacing-md);
-}
-
-.social-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  color: #FFFFFF;
-  transition: all var(--transition-base);
-}
-
-.social-icon:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-.footer-copyright {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.875rem;
-}
-
-@media (max-width: 768px) {
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-xl);
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    gap: var(--spacing-md);
-    text-align: center;
-  }
-}
-</style>

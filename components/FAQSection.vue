@@ -30,102 +30,32 @@ function toggleFaq(index: number) {
 </script>
 
 <template>
-  <section class="faq" id="faq">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-badge">FAQ</span>
-        <h2 class="section-title">Les questions fréquentes</h2>
+  <section class="py-24 bg-[#F6F7FB]" id="faq">
+    <div class="w-full max-w-[1248px] mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <span class="inline-block px-4 py-1 bg-[#D4A72C]/10 text-[#D4A72C] text-sm font-semibold rounded-full border border-[#D4A72C]/30 mb-6">FAQ</span>
+        <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold text-[#0B1F3A] leading-tight">Les questions fréquentes</h2>
       </div>
 
-      <div class="faq-list reveal">
+      <div class="max-w-[800px] mx-auto reveal">
         <div
           v-for="(item, index) in faqItems"
           :key="index"
-          class="faq-item"
-          :class="{ active: activeFaq === index }"
+          class="faq-item bg-white rounded-lg mb-4 border border-[#E6EAF2] overflow-hidden transition-all duration-200 hover:border-[#0B1F3A]"
+          :class="{ 'active border-[#0B1F3A] shadow-lg': activeFaq === index }"
         >
-          <button class="faq-question" @click="toggleFaq(index)">
+          <button 
+            class="w-full flex items-center justify-between p-6 bg-transparent border-none cursor-pointer text-base font-semibold text-[#0B1F3A] text-left transition-all duration-200 hover:bg-[#F1F4FA]"
+            @click="toggleFaq(index)"
+          >
             <span>{{ item.question }}</span>
-            <span class="faq-icon">{{ activeFaq === index ? '−' : '+' }}</span>
+            <span class="faq-icon text-2xl font-light text-[#0B1F3A]">{{ activeFaq === index ? '−' : '+' }}</span>
           </button>
           <div class="faq-answer" :class="{ open: activeFaq === index }">
-            <p>{{ item.answer }}</p>
+            <p class="text-[#526075] leading-relaxed px-6 pb-6">{{ item.answer }}</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 </template>
-
-<style scoped>
-.faq {
-  padding: var(--spacing-4xl) 0;
-  background: var(--color-background);
-}
-
-.faq-list {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.faq-item {
-  background: var(--color-white);
-  border-radius: var(--radius-lg);
-  margin-bottom: var(--spacing-md);
-  border: 1px solid var(--color-border);
-  overflow: hidden;
-  transition: all var(--transition-base);
-}
-
-.faq-item:hover {
-  border-color: var(--color-primary);
-}
-
-.faq-item.active {
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-lg);
-}
-
-.faq-question {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--spacing-lg);
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--color-primary);
-  text-align: left;
-  transition: all var(--transition-base);
-}
-
-.faq-question:hover {
-  background: var(--color-background-alt);
-}
-
-.faq-icon {
-  font-size: 1.5rem;
-  font-weight: 300;
-  color: var(--color-primary);
-  transition: transform var(--transition-base);
-}
-
-.faq-answer {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-}
-
-.faq-answer.open {
-  max-height: 300px;
-  padding: 0 var(--spacing-lg) var(--spacing-lg);
-}
-
-.faq-answer p {
-  color: var(--color-text-light);
-  line-height: 1.7;
-}
-</style>

@@ -7,6 +7,7 @@ const articles: Record<string, any> = {
   'reviser-efficacement': {
     title: 'Comment réviser efficacement ? Ce que dit la science',
     tag: 'Sciences cognitives',
+    tagClass: 'bg-blue-500/10 text-blue-500',
     readTime: '4 min',
     content: `
       <h2>Comment réviser efficacement ? Ce que dit la science</h2>
@@ -49,6 +50,7 @@ const articles: Record<string, any> = {
   'flashcards': {
     title: 'Pourquoi les flashcards sont l\'arme secrète des meilleurs étudiants',
     tag: 'Méthodes',
+    tagClass: 'bg-emerald-500/10 text-emerald-500',
     readTime: '3 min',
     content: `
       <h2>Pourquoi les flashcards sont l'arme secrète des meilleurs étudiants</h2>
@@ -77,6 +79,7 @@ const articles: Record<string, any> = {
   'major-de-promo': {
     title: 'Comment devenir major de promo : le guide complet',
     tag: 'Guide complet',
+    tagClass: 'bg-[#D4A72C]/20 text-[#D4A72C]',
     readTime: '8 min',
     content: `
       <h2>Comment devenir major de promo : le guide complet</h2>
@@ -119,6 +122,7 @@ const articles: Record<string, any> = {
   'gamification': {
     title: 'Gamification et études : comment les meilleurs restent motivés',
     tag: 'Motivation',
+    tagClass: 'bg-red-500/10 text-red-500',
     readTime: '2 min',
     content: `
       <h2>Gamification et études : comment les meilleurs restent motivés</h2>
@@ -170,34 +174,34 @@ useSeoMeta({
 </script>
 
 <template>
-  <main class="blog-article-page">
-    <article class="blog-article">
-      <div class="container" style="max-width: 800px;">
+  <main class="pt-[117px]">
+    <article class="py-16 bg-white">
+      <div class="w-full max-w-[800px] mx-auto px-6">
         <!-- Article Header -->
-        <header class="article-header">
-          <div class="article-meta">
-            <span :class="['blog-tag', `tag-${article.tag.toLowerCase().replace(' ', '-')}`]">
+        <header class="mb-12 text-center">
+          <div class="flex items-center justify-center gap-4 mb-6">
+            <span :class="['px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide', article.tagClass]">
               {{ article.tag }}
             </span>
-            <span class="blog-read-time">📖 {{ article.readTime }}</span>
+            <span class="text-sm text-[#526075]">📖 {{ article.readTime }}</span>
           </div>
-          <h1 class="article-title">{{ article.title }}</h1>
+          <h1 class="text-[clamp(2rem,5vw,3rem)] leading-tight font-bold text-[#0B1F3A]">{{ article.title }}</h1>
         </header>
 
         <!-- Article Content -->
-        <div class="article-content prose" v-html="article.content" />
+        <div class="prose prose-lg max-w-none mb-16" v-html="article.content" />
 
         <!-- Article Footer -->
-        <footer class="article-footer">
-          <div class="article-cta-card">
-            <h3>Prêt à passer au niveau supérieur ?</h3>
-            <p>Rejoins les étudiants qui utilisent Major pour dominer leurs révisions.</p>
-            <NuxtLink to="/#inscription" class="btn btn-primary btn-lg">
+        <footer class="border-t-2 border-[#E6EAF2] pt-12">
+          <div class="bg-gradient-to-br from-[#0B1F3A] to-[#1a3a5f] text-white p-12 rounded-2xl text-center mb-8">
+            <h3 class="text-xl font-bold text-white mb-4">Prêt à passer au niveau supérieur ?</h3>
+            <p class="text-white/90 mb-6">Rejoins les étudiants qui utilisent Major pour dominer leurs révisions.</p>
+            <NuxtLink to="/#inscription" class="inline-flex items-center justify-center h-11 px-8 text-base font-semibold text-[#0B1F3A] bg-white rounded-xl shadow-md transition-all duration-200 hover:bg-gray-100 hover:-translate-y-0.5 hover:shadow-lg">
               Rejoindre Major gratuitement
             </NuxtLink>
           </div>
 
-          <NuxtLink to="/blog" class="back-link">
+          <NuxtLink to="/blog" class="inline-flex items-center gap-2 text-[#526075] font-medium no-underline transition-colors duration-200 hover:text-[#0B1F3A]">
             ← Retour au blog
           </NuxtLink>
         </footer>
@@ -206,148 +210,41 @@ useSeoMeta({
   </main>
 </template>
 
-<style scoped>
-.blog-article-page {
-  padding-top: 117px; /* 45px banner + 72px header */
+<style>
+/* Prose styles for article content */
+.prose h2 {
+  @apply mt-12 mb-6 text-2xl font-bold text-[#0B1F3A];
 }
 
-.blog-article {
-  padding: var(--spacing-4xl) 0;
-  background: var(--color-white);
+.prose h3 {
+  @apply mt-8 mb-4 text-xl font-bold text-[#0B1F3A];
 }
 
-.article-header {
-  margin-bottom: var(--spacing-3xl);
-  text-align: center;
+.prose h4 {
+  @apply mt-6 mb-3 text-lg font-semibold text-[#0B1F3A];
 }
 
-.article-meta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
+.prose p {
+  @apply mb-6 text-lg leading-relaxed text-[#0B1220];
 }
 
-.article-title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  line-height: 1.2;
-  color: var(--color-primary);
+.prose ul, .prose ol {
+  @apply mb-6 pl-8;
 }
 
-.article-content {
-  font-size: 1.125rem;
-  line-height: 1.8;
-  color: var(--color-text);
-  margin-bottom: var(--spacing-4xl);
+.prose li {
+  @apply mb-2 text-lg text-[#0B1220];
 }
 
-.article-content :deep(h2) {
-  margin-top: var(--spacing-3xl);
-  margin-bottom: var(--spacing-lg);
-  font-size: 1.75rem;
+.prose strong {
+  @apply text-[#0B1F3A] font-bold;
 }
 
-.article-content :deep(h3) {
-  margin-top: var(--spacing-2xl);
-  margin-bottom: var(--spacing-md);
-  font-size: 1.375rem;
+.prose a {
+  @apply text-[#0B1F3A] underline hover:text-[#D4A72C];
 }
 
-.article-content :deep(p) {
-  margin-bottom: var(--spacing-lg);
-}
-
-.article-content :deep(ul), 
-.article-content :deep(ol) {
-  margin-bottom: var(--spacing-lg);
-  padding-left: var(--spacing-xl);
-}
-
-.article-content :deep(li) {
-  margin-bottom: var(--spacing-sm);
-}
-
-.article-content :deep(strong) {
-  color: var(--color-primary);
-  font-weight: 700;
-}
-
-.article-content :deep(a) {
-  color: var(--color-primary);
-  text-decoration: underline;
-}
-
-.article-footer {
-  border-top: 2px solid var(--color-border);
-  padding-top: var(--spacing-3xl);
-}
-
-.article-cta-card {
-  background: linear-gradient(135deg, #0B1F3A 0%, #1a3a5f 100%);
-  color: white;
-  padding: var(--spacing-3xl);
-  border-radius: var(--radius-2xl);
-  text-align: center;
-  margin-bottom: var(--spacing-2xl);
-}
-
-.article-cta-card h3 {
-  color: white;
-  margin-bottom: var(--spacing-md);
-}
-
-.article-cta-card p {
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: var(--spacing-xl);
-}
-
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  color: var(--color-text-light);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color var(--transition-base);
-}
-
-.back-link:hover {
-  color: var(--color-primary);
-}
-
-/* Tag styles (same as blog.vue) */
-.blog-tag {
-  padding: 0.25rem 0.75rem;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.tag-sciences-cognitives {
-  background: rgba(59, 130, 246, 0.1);
-  color: #3B82F6;
-}
-
-.tag-méthodes {
-  background: rgba(16, 163, 127, 0.1);
-  color: #10A37F;
-}
-
-.tag-guide-complet {
-  background: rgba(212, 167, 44, 0.2);
-  color: #D4A72C;
-}
-
-.tag-motivation {
-  background: rgba(239, 68, 68, 0.1);
-  color: #EF4444;
-}
-
-.blog-read-time {
-  font-size: 0.875rem;
-  color: var(--color-text-light);
+.prose hr {
+  @apply my-8 border-[#E6EAF2];
 }
 </style>
