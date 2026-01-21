@@ -3,7 +3,7 @@ const mobileMenuOpen = ref(false)
 </script>
 
 <template>
-  <header class="fixed top-[45px] left-0 right-0 z-[1000] h-[60px] md:h-[72px] bg-white/95 backdrop-blur-[20px] border-b border-[#E6EAF2] shadow-[0_1px_3px_0_rgba(0,0,0,0.02)]">
+  <header class="fixed top-[38px] left-0 right-0 z-[1000] h-[60px] md:h-[72px] bg-white/95 backdrop-blur-[20px] border-b border-[#E6EAF2] shadow-[0_1px_3px_0_rgba(0,0,0,0.02)]">
     <nav class="flex items-center justify-between h-full max-w-[1248px] mx-auto px-4 md:px-6 gap-4">
       <NuxtLink to="/" class="flex items-center gap-2 no-underline">
         <svg class="w-8 h-8 md:w-9 md:h-9" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -5,8 +5,8 @@
         <circle cx="12" cy="12" r="10"></circle>
         <polyline points="12 6 12 12 16 14"></polyline>
       </svg>
-      <span class="hidden sm:inline">Offre de lancement : plus que <strong class="underline mx-1">47 places</strong> au tarif réduit</span>
-      <span class="sm:hidden">Plus que <strong class="underline">47 places</strong> au tarif réduit</span>
+      <span class="hidden sm:inline">Offre de lancement : plus que <strong class="underline mx-1">73 places</strong> au tarif réduit à vie</span>
+      <span class="sm:hidden">Plus que <strong class="underline">73 places</strong> au tarif réduit à vie</span>
     </span>
   </div>
 </template>

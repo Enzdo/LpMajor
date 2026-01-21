@@ -135,9 +135,6 @@ onMounted(() => {
   const statsEl = document.querySelector('.stats')
   if (statsEl) statsObserver.observe(statsEl)
   
-  // Init chart animation
-  initInteractiveChart()
-  
   // Init exit intent
   initExitIntent()
 })
@@ -231,63 +228,6 @@ function animateCounter() {
   }
   
   requestAnimationFrame(update)
-}
-
-function initInteractiveChart() {
-  const chartTabs = document.getElementById('chartTabs')
-  const curveLine = document.getElementById('curveLine')
-  const curveFill = document.getElementById('curveFill')
-  const chartLabels = document.getElementById('chartLabels')
-
-  if (!chartTabs || !curveLine || !curveFill || !chartLabels) return
-
-  const chartData: Record<string, { line: string; fill: string; labels: string[] }> = {
-    '7j': {
-      line: 'M0,60 Q20,55 40,45 T80,50 T120,30 T160,35 T200,25',
-      fill: 'M0,60 Q20,55 40,45 T80,50 T120,30 T160,35 T200,25 L200,80 L0,80 Z',
-      labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
-    },
-    '30j': {
-      line: 'M0,55 Q25,60 50,40 T100,45 T150,25 T200,20',
-      fill: 'M0,55 Q25,60 50,40 T100,45 T150,25 T200,20 L200,80 L0,80 Z',
-      labels: ['S1', 'S2', 'S3', 'S4']
-    },
-    '90j': {
-      line: 'M0,70 Q30,65 60,50 T120,40 T180,20 T200,15',
-      fill: 'M0,70 Q30,65 60,50 T120,40 T180,20 T200,15 L200,80 L0,80 Z',
-      labels: ['Jan', 'Fév', 'Mar']
-    }
-  }
-
-  const tabs = chartTabs.querySelectorAll('.tab')
-  tabs.forEach(tab => {
-    ;(tab as HTMLElement).style.cursor = 'pointer'
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'))
-      tab.classList.add('active')
-
-      const period = (tab as HTMLElement).dataset.period || '7j'
-      const data = chartData[period]
-
-      curveLine.style.transition = 'opacity 0.3s ease'
-      curveFill.style.transition = 'opacity 0.3s ease'
-      curveLine.style.opacity = '0'
-      curveFill.style.opacity = '0'
-
-      setTimeout(() => {
-        curveLine.setAttribute('d', data.line)
-        curveFill.setAttribute('d', data.fill)
-        chartLabels.innerHTML = data.labels.map(l => `<span>${l}</span>`).join('')
-        curveLine.style.opacity = '1'
-        curveFill.style.opacity = '1'
-        curveLine.style.strokeDasharray = '300'
-        curveLine.style.strokeDashoffset = '300'
-        curveLine.style.animation = 'none'
-        ;(curveLine as any).offsetHeight
-        curveLine.style.animation = 'drawCurve 1s ease-out forwards'
-      }, 300)
-    })
-  })
 }
 
 function initExitIntent() {
@@ -466,7 +406,7 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
             <div class="progress-bar">
               <div class="progress-fill" :style="{ width: Math.min((counterValue / 200) * 100, 100) + '%' }"></div>
             </div>
-            <span class="progress-label">🔥 Plus que {{ 200 - counterValue }} places au tarif de lancement</span>
+            <span class="progress-label">🔥 Plus que {{ 200 - counterValue }} places au tarif réduit à vie</span>
           </div>
 
           <div class="hero-cta">
@@ -701,36 +641,7 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
             </div>
             <div class="feature-visual-tech">
               <div class="tech-animation chart-animation">
-                <div class="perf-chart" id="perfChart">
-                  <div class="chart-header">
-                    <span class="chart-title">Performance</span>
-                    <div class="chart-tabs" id="chartTabs">
-                      <span class="tab active" data-period="7j">7j</span>
-                      <span class="tab" data-period="30j">30j</span>
-                      <span class="tab" data-period="90j">90j</span>
-                    </div>
-                  </div>
-                  <div class="chart-body">
-                    <svg class="curve-svg" viewBox="0 0 200 80" preserveAspectRatio="none">
-                      <defs>
-                        <linearGradient id="curveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" style="stop-color:#0B1F3A;stop-opacity:0.2" />
-                          <stop offset="100%" style="stop-color:#0B1F3A;stop-opacity:0" />
-                        </linearGradient>
-                      </defs>
-                      <path class="curve-fill" id="curveFill"
-                        d="M0,60 Q20,55 40,45 T80,50 T120,30 T160,35 T200,25 L200,80 L0,80 Z"
-                        fill="url(#curveGradient)" />
-                      <path class="curve-line" id="curveLine"
-                        d="M0,60 Q20,55 40,45 T80,50 T120,30 T160,35 T200,25" fill="none" stroke="#0B1F3A"
-                        stroke-width="2" />
-                      <circle class="curve-dot" cx="200" cy="25" r="3" fill="#0B1F3A" />
-                    </svg>
-                  </div>
-                  <div class="chart-labels" id="chartLabels">
-                    <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
-                  </div>
-                </div>
+                <PerformanceChart />
               </div>
             </div>
           </div>
@@ -853,19 +764,19 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
             <div class="comparison-column bad">
               <h4>99% des étudiants</h4>
               <ul>
-                <li>❌ Révisent au hasard, sans stratégie</li>
-                <li>❌ Travaillent 10h pour retenir 2h</li>
-                <li>❌ Abandonnent face à la surcharge</li>
-                <li>❌ Stagnent pendant que d'autres progressent</li>
+                <li>😵‍💫 Révisent au hasard, sans stratégie</li>
+                <li>😩 Travaillent 10h pour retenir 2h</li>
+                <li>😫 Abandonnent face à la surcharge</li>
+                <li>😔 Stagnent pendant que d'autres progressent</li>
               </ul>
             </div>
             <div class="comparison-column good">
               <h4>Étudiants Major (1%)</h4>
               <ul>
-                <li>✅ Révisent intelligemment, au bon moment</li>
-                <li>✅ Mémorisent 3x plus en 2x moins de temps</li>
-                <li>✅ Restent motivés grâce à la gamification</li>
-                <li>✅ Grimpent dans les classements chaque semaine</li>
+                <li>🧠 Révisent intelligemment, au bon moment</li>
+                <li>⚡ Mémorisent 3x plus en 2x moins de temps</li>
+                <li>🎮 Restent motivés grâce à la gamification</li>
+                <li>🚀 Grimpent dans les classements chaque semaine</li>
               </ul>
             </div>
           </div>
@@ -912,7 +823,11 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
           <div v-for="(item, index) in faqItems" :key="index" class="faq-item" :class="{ active: activeFaq === index }">
             <button class="faq-question" @click="toggleFaq(index)">
               <span>{{ item.question }}</span>
-              <span class="faq-icon">{{ activeFaq === index ? '-' : '+' }}</span>
+              <span class="faq-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="4 6 8 10 12 6"></polyline>
+                </svg>
+              </span>
             </button>
             <div class="faq-answer">
               <p>{{ item.answer }}</p>
@@ -926,7 +841,7 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
     <section class="final-cta" id="inscription">
       <div class="container">
         <div class="cta-content reveal">
-          <h2 class="cta-title">Rejoins les 1% qui font le choix de l'excellence</h2>
+          <h2 class="cta-title font-black">Rejoins les 1% qui font le choix de l'excellence</h2>
           <p class="cta-subtitle">Le prochain major, c'est toi.</p>
 
           <form v-if="!formSubmitted" id="inscriptionForm" class="inscription-form" @submit.prevent="submitForm">
@@ -971,9 +886,27 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
             
             <!-- Garanties -->
             <div class="form-guarantees">
-              <span class="guarantee">✅ 100% gratuit</span>
-              <span class="guarantee">✅ Sans carte bancaire</span>
-              <span class="guarantee">🔒 RGPD</span>
+              <span class="guarantee">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <circle cx="8" cy="8" r="7" stroke="#10B981" stroke-width="2"/>
+                  <path d="M5 8L7 10L11 6" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                100% gratuit
+              </span>
+              <span class="guarantee">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <circle cx="8" cy="8" r="7" stroke="#10B981" stroke-width="2"/>
+                  <path d="M5 8L7 10L11 6" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Sans carte bancaire
+              </span>
+              <span class="guarantee">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <rect x="5" y="7" width="6" height="6" rx="1" stroke="#3B82F6" stroke-width="1.5"/>
+                  <path d="M6 7V5C6 3.89543 6.89543 3 8 3C9.10457 3 10 3.89543 10 5V7" stroke="#3B82F6" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                RGPD
+              </span>
             </div>
           </form>
 
@@ -1026,27 +959,36 @@ function showToast(message: string, type: 'info' | 'error' = 'info') {
           </button>
 
           <div class="exit-popup-content">
-            <div class="exit-popup-badge">🎁 Cadeau gratuit</div>
-            <h2 class="exit-popup-title">Reçois notre guide PDF offert</h2>
-            <p class="exit-popup-subtitle"><strong>"5 méthodes scientifiques pour mémoriser 2x plus vite"</strong><br>+ accès anticipé à Major</p>
+            <div class="exit-popup-badge">⏸️ Minute...</div>
+            <h2 class="exit-popup-title">Tu voulais vraiment exceller, non ?</h2>
+            <p class="exit-popup-subtitle">Si tu quittes cette page maintenant, tu ne reverras plus jamais cette offre.</p>
 
             <div class="exit-popup-benefits">
               <div class="exit-benefit">
-                <span class="benefit-icon">📚</span>
-                <span>Guide PDF gratuit</span>
+                <span class="benefit-icon">✓</span>
+                <span>Les techniques des major de promo</span>
               </div>
               <div class="exit-benefit">
-                <span class="benefit-icon">🎯</span>
-                <span>Accès prioritaire</span>
+                <span class="benefit-icon">✓</span>
+                <span>Un plan d'action concret</span>
               </div>
               <div class="exit-benefit">
-                <span class="benefit-icon">✨</span>
-                <span>Tarif réduit à vie</span>
+                <span class="benefit-icon">✓</span>
+                <span>BONUS : Code promo -50% sur Major+</span>
               </div>
             </div>
 
+            <p class="exit-popup-description">
+              Reçois <strong>GRATUITEMENT</strong> notre guide PDF exclusif :<br>
+              <strong>"5 méthodes scientifiques pour mémoriser 2x plus vite"</strong>
+            </p>
+
+            <p class="exit-popup-footer">
+              Tu es à 30 secondes de transformer tes révisions.
+            </p>
+
             <a href="#inscription" class="btn btn-primary btn-lg exit-popup-cta" @click="closeExitPopup">
-              Recevoir le guide + réserver ma place
+              Oui, j'accède au guide + code promo
             </a>
 
 
